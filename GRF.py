@@ -7,9 +7,9 @@ def gaussianRandomField(sdf, binary = False, number_of_points = 1e3):
 	# generate GRF using cahn's wave form approach
 
 	kmax = np.pi
-	pixel = len(sdf) - 1
+	pixel = 2*(len(sdf) - 1)
 	dk = 2*kmax/pixel
-	k = np.linspace(0, kmax, pixel +1)
+	k = np.linspace(0, kmax, len(sdf))
 	rho = sdf
 
 	# calculate pdf of k
@@ -54,13 +54,3 @@ def sdf_uniform(start, end, range, num = 101):
 	
 	sdf = np.piecewise(x, [x < start, (x >= start)&(x <= end), x > end], [lambda x: 0, lambda x: 1, lambda x: 0])
 	return sdf / sum(sdf)
-
-
-############# example ##############
-# specify a uniform sdf function
-sdf = sdf_uniform(10,20,[0,100], 201)
-
-image = gaussianRandomField(sdf, number_of_points = 1000)
-plt.figure('GRF')
-plt.imshow(image, cmap = 'hot')
-plt.show()
